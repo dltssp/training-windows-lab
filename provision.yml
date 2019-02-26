@@ -6,3 +6,4 @@
   roles: 
     - windows_ad_install
     - win_service_config
+    - win_domain_user
