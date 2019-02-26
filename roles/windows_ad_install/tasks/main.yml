@@ -3,18 +3,26 @@
 - name: installing domain services
   win_feature:
     name: AD-Domain-Services
-    state: present
+    include_management_tools: yes
+    include_sub_features: yes
   register: win_feature
 
-- name: restarting ad controller if required
+- name: restarting ad controller
   win_reboot:
   when: win_feature.reboot_required
 
 - name: configuring active directory controller
   win_domain:
-    dns_domain_name: "{{ windows_domain }}"
-    safe_mode_password: "{{ safe_pass }}"
-  notify: reboot_windows
+    dns_domain_name: "{{ ad_domain_name }}"
+    safe_mode_password: "{{ ad_admin_password }}"
+  register: win_config
 
+- name: restarting ad controller if required
+  win_reboot:
+  when: win_config.reboot_required
 
+- name: printing domain list post-config
+  win_shell: nltest /dclist:"{{ ad_domain_name }}"
+  tags:
+    - printresults
 

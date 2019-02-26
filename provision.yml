@@ -5,3 +5,4 @@
   
   roles: 
     - windows_ad_install
+    - win_service_config
