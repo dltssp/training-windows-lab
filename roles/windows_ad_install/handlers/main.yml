@@ -1,0 +1,5 @@
+---
+# handlers file for roles/windows_ad_install
+- name: reboot windows servers handler
+  win_reboot:
+  listen: reboot_windows

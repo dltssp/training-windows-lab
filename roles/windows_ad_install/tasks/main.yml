@@ -1,0 +1,20 @@
+---
+# tasks file for roles/windows_ad_install
+- name: installing domain services
+  win_feature:
+    name: AD-Domain-Services
+    state: present
+  register: win_feature
+
+- name: restarting ad controller if required
+  win_reboot:
+  when: win_feature.reboot_required
+
+- name: configuring active directory controller
+  win_domain:
+    dns_domain_name: "{{ windows_domain }}"
+    safe_mode_password: "{{ safe_pass }}"
+  notify: reboot_windows
+
+
+

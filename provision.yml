@@ -1,0 +1,7 @@
+---
+- name: install and configure windows lab environment
+  hosts: windows
+  gather_facts: yes
+  
+  roles: 
+    - windows_ad_install
